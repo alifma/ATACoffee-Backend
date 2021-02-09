@@ -1,14 +1,17 @@
 const express = require("express");
-const bodyParser = require("body-parser");;
-const users = require("./asset/routes/users")
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const pos = express();
+// Routers
+const users = require("./asset/routes/users");
+const items = require("./asset/routes/items");
 
 const { PORT } = require('./asset/helpers/env')
 pos.use(bodyParser.urlencoded({ extended: false }));
 pos.use(bodyParser.json());
 pos.use(cors());
 pos.use(users)
+pos.use(items)
 pos.use('/image',express.static('./public/image'))
 
 pos.use((req, res, next) => {
