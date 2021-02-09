@@ -18,10 +18,8 @@ module.exports = {
   // Tampilkan Semua Items
   modelAllItems: (name, offset, limit, orderby, sort) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT items.id, items.name as name, categories.name as category, 
-        items.price, items.image, items.description, items.size, items.deliveryMethod, 
-        items.stock, items.categoryID, item.hourStart, item.hourEnd, items.created_at, 
-        FROM items LEFT JOIN categories ON items.categoryID = categories.id WHERE items.name LIKE '%${name}%' ORDER BY items.${orderby}  ${sort} LIMIT ${offset}, ${limit}`, (error, result) => {
+        connection.query(`SELECT items.id, items.name as name, categories.name as category, items.price, items.image, items.description, items.size, items.deliveryMethod, 
+        items.stock, items.categoryID, items.hourStart, items.hourEnd, items.created_at FROM items LEFT JOIN categories ON items.categoryID = categories.id WHERE items.name LIKE '%${name}%' ORDER BY items.${orderby}  ${sort} LIMIT ${offset}, ${limit}`, (error, result) => {
             if (error) {
                 reject(new Error(error))
             } else {
@@ -33,9 +31,9 @@ module.exports = {
   // Tampilkan Detail Items
   modelDetailItems: (id) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT items.id, items.name as name, categories.name as category, 
+        connection.query(`SELECT items.id, items.name as name, categories.name as category,
         items.price, items.image, items.description, items.size, items.deliveryMethod, 
-        items.stock, items.categoryID, item.isFav, item.hourStart, item.hourEnd, items.created_at, 
+        items.stock, items.categoryID, items.hourStart, items.hourEnd, items.created_at
         FROM items LEFT JOIN categories ON items.categoryID = categories.id WHERE items.id=${id}`, (error, result) => {
             if (error) {
                 reject(new Error(error))
@@ -48,8 +46,8 @@ module.exports = {
   // Tambah Items Baru
   modelAddItems: (data) => {
     return new Promise((resolve, reject) => {
-      connection.query(`INSERT INTO items (name, price, description, size, deliveryMethod, stock, categoryID, hourStart, hourEnd)
-      VALUES ("${data.name}", '${data.price}', '${data.description}', '${data.size}', '${data.deliveryMethod}', '${data.stock}', '${data.categoryID}', '${data.hourStart}', '${data.hourEnd}')`, (error, result) => {
+      connection.query(`INSERT INTO items (name, image, price, description, size, deliveryMethod, stock, categoryID, hourStart, hourEnd)
+      VALUES ("${data.name}", '${data.image}', '${data.price}', '${data.description}', '${data.size}', '${data.deliveryMethod}', '${data.stock}', '${data.categoryID}', ${data.hourStart}, ${data.hourEnd})`, (error, result) => {
             if (error) {
                 reject(new Error(error))
             } else {
@@ -70,10 +68,11 @@ module.exports = {
         })
     })
   },
+
   // Patch Items
   modelPatchItems: (data, id) => {
     return new Promise((resolve, reject) => {
-        connection.query(`UPDATE t_menu SET ? WHERE id=?`, [data, id],
+        connection.query(`UPDATE items SET ? WHERE id=?`, [data, id],
             (error, result) => {
                 if (error) {
                     reject(new Error(error))
