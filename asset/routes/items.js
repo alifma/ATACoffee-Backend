@@ -11,7 +11,7 @@ const {
 } = require('../controllers/items')
 
 // Redis Methods
-// const {getRedisMenus} = require('../helpers/redis/menus')
+const {getRedisItems} = require('../helpers/redis/items')
 
 // Auth & Authorize
 // const {authentication, authorizeAdmin} = require('../helpers/middleware/auth')
@@ -21,7 +21,7 @@ const {singleUpload} = require('../helpers/middleware/upload')
 
 // Atur route menus
 route
-      .get('/items', getAllItems)       //Admin & Cashier
+      .get('/items', getRedisItems, getAllItems)       //Admin & Cashier
       .get('/items/:id', getDetailItems)//Admin & Cashier
       .post('/items', singleUpload, addItems)         //Admin
       .delete('/items/:id', deleteItems)              //Admin

@@ -16,10 +16,10 @@ module.exports = {
     })
   },
   // Tampilkan Semua Items
-  modelAllItems: (name, offset, limit, orderby, sort) => {
+  modelAllItems: (name, offset, limit, orderby, sort, category) => {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT items.id, items.name as name, categories.name as category, items.price, items.image, items.description, items.size, items.deliveryMethod, 
-        items.stock, items.categoryID, items.hourStart, items.hourEnd, items.created_at FROM items LEFT JOIN categories ON items.categoryID = categories.id WHERE items.name LIKE '%${name}%' ORDER BY items.${orderby}  ${sort} LIMIT ${offset}, ${limit}`, (error, result) => {
+        items.stock, items.categoryID, items.hourStart, items.hourEnd, items.created_at FROM items LEFT JOIN categories ON items.categoryID = categories.id WHERE items.name LIKE '%${name}%' AND categoryID LIKE '${category}' ORDER BY items.${orderby}  ${sort} LIMIT ${offset}, ${limit}`, (error, result) => {
             if (error) {
                 reject(new Error(error))
             } else {
@@ -68,7 +68,6 @@ module.exports = {
         })
     })
   },
-
   // Patch Items
   modelPatchItems: (data, id) => {
     return new Promise((resolve, reject) => {
