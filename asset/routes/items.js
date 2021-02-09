@@ -1,7 +1,7 @@
 const express = require('express')
 const route = express.Router()
 
-// Ambil Method dari Controller Menus
+// Ambil Method dari Controller Items
 const {
   getAllItems,
   getDetailItems,
@@ -13,16 +13,13 @@ const {
 // Redis Methods
 const {getRedisItems} = require('../helpers/redis/items')
 
-// Auth & Authorize
-// const {authentication, authorizeAdmin} = require('../helpers/middleware/auth')
-
 // Upload File
 const {singleUpload} = require('../helpers/middleware/upload')
 
-// Atur route menus
+// Atur route Items
 route
-      .get('/items', getRedisItems, getAllItems)       //Admin & Cashier
-      .get('/items/:id', getDetailItems)//Admin & Cashier
+      .get('/items', getRedisItems, getAllItems)      //Admin & Cashier
+      .get('/items/:id', getDetailItems)              //Admin & Cashier
       .post('/items', singleUpload, addItems)         //Admin
       .delete('/items/:id', deleteItems)              //Admin
       .patch('/items/:id', singleUpload, patchItems)  //Admin

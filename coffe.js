@@ -5,13 +5,17 @@ const pos = express();
 // Routers
 const users = require("./asset/routes/users");
 const items = require("./asset/routes/items");
+const categories = require("./asset/routes/categories");
 
 const { PORT } = require('./asset/helpers/env')
 pos.use(bodyParser.urlencoded({ extended: false }));
 pos.use(bodyParser.json());
 pos.use(cors());
+
+// use Routers
 pos.use(users)
 pos.use(items)
+pos.use(categories)
 pos.use('/image',express.static('./public/image'))
 
 pos.use((req, res, next) => {

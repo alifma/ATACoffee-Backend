@@ -30,9 +30,9 @@ const {
 } = require('lodash');
 
 module.exports = {
-    // Lempar All menus ke Redist
+    // Lempar All Items ke Redist
     setRedisItems: () => {
-        // Panggil Models All Active
+        // Panggil All Items
         modelRedisItems().then((response) => {
             // Ubah Response jadi String agar bisa disimpan di redis
             const data = JSON.stringify(response)
