@@ -7,6 +7,7 @@ const pos = express();
 const users = require("./asset/routes/users");
 const items = require("./asset/routes/items");
 const categories = require("./asset/routes/categories");
+const orders = require("./asset/routes/orders");
 
 const { PORT } = require('./asset/helpers/env')
 pos.use(bodyParser.urlencoded({ extended: false }));
@@ -20,6 +21,7 @@ pos.use('/image',express.static('./public/image'))
 pos.use(users)
 pos.use(items)
 pos.use(categories)
+pos.use(orders)
 
 // Route yang Tidak Terdaftar
 pos.use((req, res, next) => {
