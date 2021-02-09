@@ -43,8 +43,8 @@ module.exports = {
             error({}, 400, 'Internal Server Redis Error', err.message, {})
         })
     },
-    
-    // Tampilkan Semua Menu yang aktif
+
+    // Tampilkan Semua Item yang aktif
     getAllItems: async (req, res) => {
         try {
             // Ambil Query dari URL
@@ -70,9 +70,9 @@ module.exports = {
                             page: page,
                             // Limit Tiap Halaman
                             limit: limit,
-                            // Semua menu yang aktif
-                            totalMenus: total[0].total,
-                            // Semua menu yang Sesuai Query
+                            // Semua Item yang aktif
+                            totalItems: total[0].total,
+                            // Semua Item yang Sesuai Query
                             totalResult: totalResult[0].total,
                             // Jumlah Page yang Sesuai Query
                             pageResult: Math.ceil(totalResult[0].total / limit),
@@ -96,7 +96,7 @@ module.exports = {
         }
     },
 
-    // Tampilkan detail dari sebuah menu
+    // Tampilkan detail dari sebuah Item
     getDetailItems: (req, res) => {
         try {
             // Ambil params, params itu yang ada di link
@@ -121,7 +121,7 @@ module.exports = {
         }
     },
 
-    // Tambahkan Menu baru
+    // Tambahkan Item baru
     addItems: (req, res) => {
         try {
             const rawData = req.body
@@ -144,7 +144,7 @@ module.exports = {
                         // Set data ke Redis
                         module.exports.setRedisItems()
                         // Kalau berhasil menambahkan data
-                        success(res, 200, 'Add Menu Success', {}, {})
+                        success(res, 200, 'Add Item Success', {}, {})
                     })
                     .catch((err) => {
                         // Hapus File yang terupload keupload kalau gak jadi
@@ -172,7 +172,7 @@ module.exports = {
         }
     },
 
-    // Delete Menu
+    // Delete item
     deleteItems: (req, res) => {
         try {
             const id = req.params.id
@@ -190,7 +190,7 @@ module.exports = {
                         // Set data ke Redis
                         module.exports.setRedisItems()
                         // Kalau ada yang terhapus
-                        success(res, 200, 'Delete Menu Success', {}, {})
+                        success(res, 200, 'Delete Item Success', {}, {})
                     } else {
                         // Kalau tidak ada  yang terhapus karena salah ID
                         error(res, 400, 'Nothing deleted, Wrong ID!', {}, {})
@@ -206,7 +206,7 @@ module.exports = {
         }
     },
 
-    // Perbarui Menu (Beberapa Kolom)
+    // Perbarui Item (Beberapa Kolom)
     patchItems: (req, res) => {
         try {
             const id = req.params.id
@@ -234,7 +234,7 @@ module.exports = {
                         'updated_at': currDate
                     }
                 }
-                // Update Data Menus
+                // Update Data items
                 modelPatchItems(data, id)
                     .then((response) => {
                         if (response.affectedRows != 0) {

@@ -29,16 +29,16 @@ module.exports = {
           const offset = page === 1 ? 0 : (page - 1) * limit
           const orderby = req.query.order ? req.query.order : 'id'
           const sort = req.query.sort ? req.query.sort : 'ASC'
-          // Banyaknya Menu Yang ada
-          const totalMenus= response.length
+          // Banyaknya Item Yang ada
+          const totalItems = response.length
           const dataFiltername = []
           if (req.query.category) {
             const categorySearch = req.query.category
             const dataFilterStatus = _.filter(response, (item)=>{ return item.categoryID == categorySearch })
-            // Filter Menu Berdasarkan Name
+            // Filter Item Berdasarkan Name
             dataFilterName = _.filter(dataFilterStatus, (item)=>{ return item.name.toLowerCase().includes(name.toLowerCase()) || item.name.toLowerCase().includes(name)})
           }else {
-           // Filter Menu Berdasarkan Name
+           // Filter item Berdasarkan Name
             dataFilterName = _.filter(response, (item)=>{ return item.name.toLowerCase().includes(name.toLowerCase()) || item.name.toLowerCase().includes(name)})
           }
           // Pengurutan Data
@@ -58,14 +58,14 @@ module.exports = {
               page,
               // Limit Tiap Halaman
               limit,
-              // Banyaknya Menus yang ada
-              totalMenus,
-              // Banyaknya Menus yang Memenuhi Filter
+              // Banyaknya Items yang ada
+              totalItems,
+              // Banyaknya Items yang Memenuhi Filter
               totalResult,  
               // Banyaknya Halaman Yang Memenuhi Filter
               pageResult: Math.ceil(dataOrdered.length / limit),
             }
-            success(res, 200, 'Display Menu From Redis', pagination, dataPaginated)
+            success(res, 200, 'Display Items From Redis', pagination, dataPaginated)
           }else{
             error(res, 400, 'No data on this page', '0 Result', {})
           }

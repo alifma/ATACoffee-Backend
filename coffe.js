@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const pos = express();
+
 // Routers
 const users = require("./asset/routes/users");
 const items = require("./asset/routes/items");
@@ -12,12 +13,15 @@ pos.use(bodyParser.urlencoded({ extended: false }));
 pos.use(bodyParser.json());
 pos.use(cors());
 
+// Access Image Path
+pos.use('/image',express.static('./public/image'))
+
 // use Routers
 pos.use(users)
 pos.use(items)
 pos.use(categories)
-pos.use('/image',express.static('./public/image'))
 
+// Route yang Tidak Terdaftar
 pos.use((req, res, next) => {
   const error = new Error("not found");
   error.status = 404;
