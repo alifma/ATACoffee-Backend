@@ -218,7 +218,7 @@ module.exports = {
                                 }
                             })
                         }
-                        await modelsDeleteUsers(id)
+                        modelsDeleteUsers(id)
                             .then(() => {
                                 module.exports.setRedisUsers()
                                 success(res, 200, 'Delete Data Users Success', {}, {})
