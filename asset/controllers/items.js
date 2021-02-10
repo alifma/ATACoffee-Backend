@@ -37,7 +37,7 @@ module.exports = {
             // Ubah Response jadi String agar bisa disimpan di redis
             const data = JSON.stringify(response)
             // Set Data ke RedisClient
-            redisClient.set('dataItems', data)
+            redisClient.set('dataItemsATA', data)
         }).catch((err) => {
             // Kalua ada Error
             error({}, 400, 'Internal Server Redis Error', err.message, {})

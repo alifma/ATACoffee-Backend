@@ -10,7 +10,7 @@ var _ = require('lodash');
 // Export Module
 module.exports = {
   getRedisItems: (req, res, next) => {
-    client.get('dataItems', (err, result) => {
+    client.get('dataItemsATA', (err, result) => {
       if(err){
         // Kalau ada gangguan pas getData
         console.log(err)

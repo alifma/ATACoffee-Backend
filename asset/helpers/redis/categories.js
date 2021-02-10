@@ -11,7 +11,7 @@ var _ = require('lodash');
 
 module.exports = {
   getRedisCtgry: (req, res, next) => {
-    client.get('dataCtgry', (err, result) => {
+    client.get('dataCtgryATA', (err, result) => {
       if (err) {
         // Kalau ada gangguan pas getData
         console.log(err)

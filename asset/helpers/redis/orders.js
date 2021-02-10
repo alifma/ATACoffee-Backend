@@ -13,7 +13,7 @@ const moment = require('moment');
 
 module.exports = {
   getRedisOrders: (req, res, next) => {
-    client.get('dataOrders', (err, result) => {
+    client.get('dataOrdersATA', (err, result) => {
       if (err) {
         // Kalau ada gangguan pas getData
         console.log(err)
