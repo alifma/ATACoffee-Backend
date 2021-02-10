@@ -171,18 +171,18 @@ module.exports = {
               "paymentType":data[0].paymentType,
               "total": total}
             modelPostBodyOrder(data)
-                .then(() => {
-                    // // Post Head Data
-                    // modelPostHeadOrder(dataHead)
-                    // .then((respose)=> {
-                      success(res, 200, 'Add Order Head Success', {}, {})
-                    // })
-                    // // Set Data ke Redis
-                    // module.exports.setRedisOrders()
-                    // // Kalau berhasil menambahkan
-                    // .catch((err) => {
-                    //   error(res, 400, 'Update Head error', err.message, {})
-                    // })
+                .then(async () => {
+                    // Post Head Data
+                    await modelPostHeadOrder(dataHead)
+                    .then(()=> {
+                      // Set Data ke Redis
+                      module.exports.setRedisOrders()
+                      success(res, 200, 'Add New Order Success', {}, {})
+                    })
+                    // Kalau berhasil menambahkan
+                    .catch((err) => {
+                      error(res, 400, 'Update Head error', err.message, {})
+                    })
                 })
                 .catch((err) => {
                     // Kalau ada tipe data yang salah
