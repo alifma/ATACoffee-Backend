@@ -1,6 +1,8 @@
 const client = require('../../config/redis')
 const _ = require('lodash')
-const { success } = require("../sucerr")
+const {
+    success
+} = require("../sucerr")
 
 module.exports = {
     getAllIUsersRedis: (req, res, next) => {
@@ -19,9 +21,9 @@ module.exports = {
                     const filterData = _.filter(chageJSON, (items) => {
                         return items.name.includes(name)
                     })
-                    const sortBy = _.orderBy(filterData, [sort],[order]);
+                    const sortBy = _.orderBy(filterData, [sort], [order]);
                     console.log(sortBy)
-                    const paginationData = _.slice(sortBy, limitpage, limitpage+limit)
+                    const paginationData = _.slice(sortBy, limitpage, limitpage + limit)
                     const pagination = {
                         page: page,
                         limit: limit,

@@ -1,0 +1,91 @@
+{
+  "code": 200,
+  "msg": "Display All Order Success",
+  "pagination": {
+      "page": "1",
+      "limit": "5",
+      "range": "YEAR",
+      "allOrders": 5,
+      "thisWeekOrders": 5,
+      "lastWeekOrders": 0,
+      "gainOrders": null,
+      "totalResult": 5,
+      "totalPages": 1,
+      "totalIncome": 198000,
+      "todaysIncome": 198000,
+      "YesterdayIncome": 0,
+      "gainIncome": "Infinity"
+  },
+  "data": [
+      {
+          "inv": 102050,
+          "created_at": "2021-02-10T03:48:18.000Z",
+          "cashier": null,
+          "customer": "Wangy Xiao",
+          "orders": " Kue Basah (R) x 1, Kue Kering (R) x 1, Kue Keringasd (R) x 1",
+          "total": 100000,
+          "orderType": "Delivery",
+          "orderDetails": "Jalan Hartono2",
+          "orderPhone": "+62895610787856",
+          "paymentType": "OVO",
+          "isPending": 1,
+          "updated_at": null
+      },
+      {
+          "inv": 102045,
+          "created_at": "2021-02-09T23:40:54.000Z",
+          "cashier": "Ari",
+          "customer": "Wangy Wangyyy",
+          "orders": " Kue Basah (R) x 1, Kue Kering (R) x 1, Kue Keringasd (R) x 1, Kue Basah (R) x 1, Kue Kering (R) x 1, Kue Keringasd (R) x 1",
+          "total": 99000,
+          "orderType": "Delivery",
+          "orderDetails": "Jalan Hartono2",
+          "orderPhone": "+62895610787856",
+          "paymentType": "OVO",
+          "isPending": 0,
+          "updated_at": "2021-02-09T23:49:54.000Z"
+      },
+      {
+          "inv": 102034,
+          "created_at": "2021-02-09T17:34:14.000Z",
+          "cashier": "1",
+          "customer": "Wangy Wangyyy",
+          "orders": " Kue Basah (R) x 1, Kue Kering (R) x 1",
+          "total": 66000,
+          "orderType": "Delivery",
+          "orderDetails": "Jalan Hartono2",
+          "orderPhone": "+62895610787856",
+          "paymentType": "OVO",
+          "isPending": 0,
+          "updated_at": "2021-02-10T05:54:52.000Z"
+      },
+      {
+          "inv": 102033,
+          "created_at": "2021-02-09T17:32:03.000Z",
+          "cashier": "2",
+          "customer": "Wangy Wangyyy",
+          "orders": " Kue Basah (R) x 1",
+          "total": 33000,
+          "orderType": "Delivery",
+          "orderDetails": "Jalan Hartono2",
+          "orderPhone": "+62895610787856",
+          "paymentType": "OVO",
+          "isPending": 0,
+          "updated_at": "2021-02-10T05:54:17.000Z"
+      },
+      {
+          "inv": 12313,
+          "created_at": "2021-02-08T15:18:59.000Z",
+          "cashier": null,
+          "customer": "Wangy Wangy",
+          "orders": " Cold Brew (R) x 1, Spaghetty (250 Gr) x 2",
+          "total": 150000,
+          "orderType": "Delivery",
+          "orderDetails": "Iskandar Street Km 5 refinery road oppsite republic road, effurun, Jakarta",
+          "orderPhone": "+62 81348287878",
+          "paymentType": "Bank Account",
+          "isPending": 1,
+          "updated_at": null
+      }
+  ]
+}

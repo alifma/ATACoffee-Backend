@@ -3,6 +3,7 @@ const route = express.Router()
 
 // Ambil Method dari Controller Orders
 const {
+  getAllOrders,
   getDetailOrders,
   postOrders,
   updateOrders,
@@ -10,11 +11,11 @@ const {
 } = require('../controllers/orders')
 
 // Redis Methods
-// const {getRedisOrders} = require('../helpers/redis/orders')
+const {getRedisOrders} = require('../helpers/redis/orders')
 
 // Atur route Items
 route
-      // .get('/orders', getRedisItems, getAllItems)      //Admin & Cashier
+      .get('/orders', getRedisOrders, getAllOrders)           //Admin & Cashier
       .get('/orders/:inv', getDetailOrders)              //Admin & Cashier
       .post('/orders', postOrders)         //Admin
       .delete('/orders/:inv', deleteOrders)              //Admin
