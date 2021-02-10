@@ -31,7 +31,7 @@ module.exports = {
           const sort = req.query.sort ? req.query.sort : 'ASC'
           // Banyaknya Item Yang ada
           const totalItems = response.length
-          const dataFiltername = []
+          let dataFilterName = []
           if (req.query.category) {
             const categorySearch = req.query.category
             const dataFilterStatus = _.filter(response, (item)=>{ return item.categoryID == categorySearch })
