@@ -1,5 +1,6 @@
 const express = require('express')
 const route = express.Router()
+const {authToken, authAdmin} = require('../helpers/middleware/auth')
 
 // Ambil Method dari Controller Orders
 const {
@@ -14,11 +15,11 @@ const {
 
 // Atur route Items
 route
-      // .get('/orders', getRedisItems, getAllItems)      //Admin & Cashier
-      .get('/orders/:inv', getDetailOrders)              //Admin & Cashier
-      .post('/orders', postOrders)         //Admin
-      .delete('/orders/:inv', deleteOrders)              //Admin
-      .patch('/orders/:inv', updateOrders)  //Admin
+      // .get('/orders', authToken, getRedisItems, getAllItems)      //Admin & Cashier
+      .get('/orders/:inv', authToken, getDetailOrders)              //Admin & Cashier
+      .post('/orders', authToken, authAdmin, postOrders)         //Admin
+      .delete('/orders/:inv',authToken, authAdmin, deleteOrders)              //Admin
+      .patch('/orders/:inv',authToken, authAdmin, updateOrders)  //Admin
 
 // Exports Modules
 module.exports = route    

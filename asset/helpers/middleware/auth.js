@@ -1,21 +1,21 @@
 const { response } = require('express')
 const jwt = require('jsonwebtoken')
 const {JWT} = require('../env')
-const {inputfail} = require('../sucerr')
+const {error} = require('../response')
 
 
 module.exports ={
     authToken : (req,res,next) => {
         const headers = req.headers
         if(!headers.token){
-            inputfail(res, 'token must be required')
+            error(res, 400,'token must be required')
         }else{
             jwt.verify(headers.token, JWT, (err, decoded) =>{
                 if(err){
-                    inputfail(res,'token fail')
+                    error(res, 400,'token fail')
                 }else{
                     console.log(decoded)
-                    res.userAccess = decoded.level
+                    res.userAccess = decoded.access
                     next()
                 }
             })
@@ -23,10 +23,11 @@ module.exports ={
     },
     authAdmin : (req,res,next) => {
         const access = res.userAccess
+        console.log(access)
         if(access === 1){
         next()
         }else{
-            inputfail(res,'you are not allowed')
+            error(res, 400,'you are not allowed')
         }
     },
     authCostumer : (req,res,next) => {
@@ -34,7 +35,7 @@ module.exports ={
         if(access === 2) {
             next()
         }else{
-            inputfail(res,'you are not allowed')
+            error(res, 400,'you are not allowed')
         }
         
     }
