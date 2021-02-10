@@ -1,8 +1,6 @@
 const client = require('../../config/redis')
 const _ = require('lodash')
-const {
-    success
-} = require("../sucerr")
+const {success} = require('../response')
 
 module.exports = {
     getAllIUsersRedis: (req, res, next) => {
@@ -30,7 +28,7 @@ module.exports = {
                         totalAll: chageJSON.length,
                         totalPage: Math.ceil(chageJSON.length / limit)
                     }
-                    success(res, paginationData, pagination, 'data from redis')
+                    success(res, 200, 'Display From Redis Users Success', pagination, paginationData)
                 } else {
                     next()
                 }

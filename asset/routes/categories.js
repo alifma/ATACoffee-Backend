@@ -1,5 +1,6 @@
 const express = require('express')
 const route = express.Router()
+const {authToken, authAdmin} = require('../helpers/middleware/auth')
 
 // Ambil Method dari Controller Categories
 const {
@@ -15,11 +16,11 @@ const {getRedisCtgry} = require('../helpers/redis/categories')
 
 // Atur route Categories
 route
-      .get('/categories', getRedisCtgry, getAllCtgry)  //Admin & Cashier
-      .get('/categories/:id', getDetailCtgry)   //Admin & Cashier
-      .post('/categories', addCtgry)            //Admin
-      .delete('/categories/:id', deleteCtgry)   //Admin
-      .patch('/categories/:id', updateCtgry)    //Admin
+      .get('/categories', authToken, getRedisCtgry, getAllCtgry)  //Admin & Cashier
+      .get('/categories/:id', authToken, getDetailCtgry)   //Admin & Cashier
+      .post('/categories', authToken, authAdmin, addCtgry)            //Admin
+      .delete('/categories/:id', authToken, authAdmin, deleteCtgry)   //Admin
+      .patch('/categories/:id', authToken, authAdmin, updateCtgry)    //Admin
 
 // Exports Modules
 module.exports = route

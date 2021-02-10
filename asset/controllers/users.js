@@ -1,6 +1,6 @@
 const bycrypt = require('bcrypt')
 const { register, checkEmail, modelsDetailUsers, modelsUpdateUsers, modelsGetTotalUsers, modelsGetAllUsers, modelsDeleteUsers, modelsGetAllUsersRedis } = require('../models/users')
-const { emailRegister, datainvalid, success, fail } = require('../helpers/sucerr')
+const {success, error} = require('../helpers/response')
 const fs = require('fs')
 const { JWT } = require('../helpers/env')
 const jwt = require('jsonwebtoken')
@@ -22,15 +22,16 @@ module.exports = {
                     const token = jwt.sign(user, JWT)
                     res.json({
                         msg: 'login success',
-                        token: token
+                        token: token,
+                        id: response[0].id
                     })
 
                     //    success(res, {}, {}, 'login success')
                 } else {
-                    datainvalid(res, 'password wrong')
+                    error(res, 400, 'Wrong Password')
                 }
             } else {
-                datainvalid(res, 'email unregister')
+                error(res,400, 'email unregister')
             }
         }).catch((error) => {
             res.json(error)
@@ -42,7 +43,7 @@ module.exports = {
         console.log(body)
         checkEmail(body.email).then(async (response) => {
             if (response.length >= 1) {
-                emailRegister(res, 'email already exist')
+                error(res, 400, 'email already exist')
             } else {
                 const salt = await bycrypt.genSalt()
                 const password = await bycrypt.hash(body.password, salt)
@@ -59,7 +60,7 @@ module.exports = {
                 module.exports.setRedisUsers()
                 // res.json(user)
                 register(user).then((response) => {
-                    success(res, 'data register')
+                    success(res, 200, 'data success register')
                 }).catch((error) => {
                     res.json(error)
                 })
@@ -87,13 +88,13 @@ module.exports = {
                         email: response[0].email,
                         address: response[0].address
                     }
-                    success(res, result, {}, 'get detail success')
+                    success(res, 200, 'Display Items Success', {}, result)
                 })
                 .catch((res) => {
-                    datainvalid(res, 'cek data invalid')
+                    error(res, 400, 'fail')
                 })
         } catch (error) {
-            fail(res, 'server cant get what   you want', [])
+            error(res, 400, 'fail')
         }
     },
     updateUsers: (req, res) => {
@@ -112,7 +113,7 @@ module.exports = {
           })
         })
         .catch((res) => {
-          fail(res, 'server cant get what you want', [])
+            error(res, 400, 'cant delete users image')
         })
         try {
             const id = req.params.id
@@ -135,15 +136,15 @@ module.exports = {
                     // module.exports.setRedisItems()
                     console.log(response)
                     module.exports.setRedisUsers()
-                    success(res, dataUpdate, {}, 'update data success')
+                    success(res, 200, 'Update Data Users Success', {}, dataUpdate)
                 })
                 .catch((err) => {
-                    fail(res, 'server cant update', dataUpdate)
+                    error(res, 400, 'server cant update', err.message, {})
                 });
 
         } catch (error) {
             console.log(error)
-            fail(res, 'server cant update', [])
+            error(res, 400, 'server cant update', err.message, {})
         }
     },
     getAllUsers: async (req, res) => {
@@ -175,7 +176,7 @@ module.exports = {
                     })
                     console.log(data)
                     if (data.length < 1) {
-                        datainvalid(res, 'data invalid', data)
+                        error(res, 400, 'data cant find')
                     } else {
                         const result = {
                             msg: 'data from database mysql',
@@ -186,14 +187,14 @@ module.exports = {
 
                         }
                         module.exports.setRedisUsers()
-                        success(res, data, result, 'get Product success')
+                        success(res, 200, 'Get Users Success', result, data)
                     }
                 })
                 .catch((err) => {
-                    fail(res, 'server cant get what you want', err)
+                    error(res, 400, 'server cant get what you want', err.message)
                 })
         } catch (error) {
-            fail(res, 'server cant get what   you want', [])
+            error(res, 400, 'server cant get what   you want', error.message)
         }
     },
     deleteUsers: (req, res) => {
@@ -212,14 +213,14 @@ module.exports = {
           })
         })
         .catch((res) => {
-          fail(res, 'server cant get what you want', [])
+          error(res, 400, 'server cant get what you want')
         })
         try {
             const id = req.params.id
             modelsDeleteUsers(id)
                 .then((response) => {
                     module.exports.setRedisUsers()
-                    success(res, {}, {}, 'delete data success')
+                    success(res, 200, 'Delete Data Users Success')
                 })
                 .catch((err) => {
                     console.log(err)
