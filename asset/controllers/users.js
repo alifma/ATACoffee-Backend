@@ -209,25 +209,29 @@ module.exports = {
             const id = req.params.id;
             await modelsDetailUsers(id)
                 .then((response) => {
-                    if (response[0].image != 'default.png') {
-                        fs.unlink('./public/image/' + response[0].image, (err) => {
-                            if (err) {
-                                console.error(err)
-                                return
-                            }
-                        })
+                    if (response.length > 0) {
+                        if (response[0].image != 'default.png') {
+                            fs.unlink('./public/image/' + response[0].image, (err) => {
+                                if (err) {
+                                    console.error(err)
+                                    return
+                                }
+                            })
+                        }
+                        await modelsDeleteUsers(id)
+                            .then(() => {
+                                module.exports.setRedisUsers()
+                                success(res, 200, 'Delete Data Users Success', {}, {})
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    } else {
+                        success(res, 400, 'User Not Found', {}, {})
                     }
                 })
                 .catch((err) => {
                     error(res, 400, 'server cant get what you want', err.message)
-                })
-            modelsDeleteUsers(id)
-                .then(() => {
-                    module.exports.setRedisUsers()
-                    success(res, 200, 'Delete Data Users Success', {}, {})
-                })
-                .catch((err) => {
-                    console.log(err)
                 })
         } catch (err) {
             console.log(err)
