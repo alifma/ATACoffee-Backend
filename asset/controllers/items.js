@@ -125,7 +125,6 @@ module.exports = {
     addItems: (req, res) => {
         try {
             const rawData = req.body
-            console.log(req.file)
             if (rawData.name && rawData.price && rawData.description && rawData.size && rawData.deliveryMethod && rawData.stock && rawData.categoryID && !isUndefined(req.file)) {
                 const data = {
                     name: rawData.name,
