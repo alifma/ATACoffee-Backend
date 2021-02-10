@@ -205,25 +205,22 @@ module.exports = {
         }
     },
     deleteUsers: (req, res) => {
-        const id = req.params.id;
-        modelsDetailUsers(id)
-            .then((response) => {
-                console.log(response)
-                const result = {
-                    image: response[0].image
-                }
-                fs.unlink('./public/image/' + result.image, (err) => {
-                    if (err) {
-                        console.error(err)
-                        return
+        try {
+            const id = req.params.id;
+            modelsDetailUsers(id)
+                .then((response) => {
+                    if (response[0].image != 'default.png') {
+                        fs.unlinkSync('./public/image/' + response[0].image, (err) => {
+                            if (err) {
+                                console.error(err)
+                                return
+                            }
+                        })
                     }
                 })
-            })
-            .catch((res) => {
-                error(res, 400, 'server cant get what you want')
-            })
-        try {
-            const id = req.params.id
+                .catch((err) => {
+                    error(res, 400, 'server cant get what you want', err.message)
+                })
             modelsDeleteUsers(id)
                 .then((response) => {
                     module.exports.setRedisUsers()
