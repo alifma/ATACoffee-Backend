@@ -19,8 +19,8 @@ const {singleUpload} = require('../helpers/middleware/upload')
 
 // Atur route Items
 route
-      .get('/items', authToken, getRedisItems, getAllItems)      //Admin & Cashier
-      .get('/items/:id', authToken, getDetailItems)              //Admin & Cashier
+      .get('/items', authToken, getRedisItems, getAllItems)                 //Admin & Customer
+      .get('/items/:id', authToken, getDetailItems)                         //Admin & Customer
       .post('/items', authToken, authAdmin, singleUpload, addItems)         //Admin
       .delete('/items/:id', authToken, authAdmin, deleteItems)              //Admin
       .patch('/items/:id', authToken, authAdmin, singleUpload, patchItems)  //Admin

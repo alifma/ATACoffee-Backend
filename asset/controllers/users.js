@@ -1,10 +1,26 @@
 const bycrypt = require('bcrypt')
-const { register, checkEmail, modelsDetailUsers, modelsUpdateUsers, modelsGetTotalUsers, modelsGetAllUsers, modelsDeleteUsers, modelsGetAllUsersRedis } = require('../models/users')
-const {success, error} = require('../helpers/response')
+const {
+    register,
+    checkEmail,
+    modelsDetailUsers,
+    modelsUpdateUsers,
+    modelsGetTotalUsers,
+    modelsGetAllUsers,
+    modelsDeleteUsers,
+    modelsGetAllUsersRedis
+} = require('../models/users')
+const {
+    success,
+    error
+} = require('../helpers/response')
 const fs = require('fs')
-const { JWT } = require('../helpers/env')
+const {
+    JWT
+} = require('../helpers/env')
 const jwt = require('jsonwebtoken')
-const { response } = require('express')
+const {
+    response
+} = require('express')
 const redis = require('../config/redis')
 
 module.exports = {
@@ -21,55 +37,52 @@ module.exports = {
                     }
                     const token = jwt.sign(user, JWT)
                     res.json({
-                        msg: 'login success',
-                        token: token,
-                        id: response[0].id
+                        msg: 'Login Success',
+                        id: response[0].id,
+                        name: response[0].name,
+                        access: response[0].access,
+                        token: token
                     })
-
-                    //    success(res, {}, {}, 'login success')
+                    success(res, 200, 'Login Success', {})
                 } else {
-                    error(res, 400, 'Wrong Password')
+                    error(res, 400, 'Wrong Password', 'Password Failed', {})
                 }
             } else {
-                error(res,400, 'email unregister')
+                error(res, 400, 'Email Not Registered', 'Email Failed', {})
             }
-        }).catch((error) => {
-            res.json(error)
+        }).catch((err) => {
+            error(res, 500, 'Internal Server Error', err.message, {})
         })
     },
-    register: async (req, res) => {
 
+    register: async (req, res) => {
         const body = req.body
         console.log(body)
         checkEmail(body.email).then(async (response) => {
             if (response.length >= 1) {
-                error(res, 400, 'email already exist')
+                error(res, 400, 'Email Exist')
             } else {
                 const salt = await bycrypt.genSalt()
                 const password = await bycrypt.hash(body.password, salt)
                 const user = {
                     email: body.email,
                     password,
-                    name: body.name,
-                    username: body.username,
-                    firstname: body.firstname,
-                    lastname: body.lastname,
+                    name: body.email,
                     handphone: body.handphone,
-                    access: body.access
                 }
                 module.exports.setRedisUsers()
                 // res.json(user)
                 register(user).then((response) => {
-                    success(res, 200, 'data success register')
-                }).catch((error) => {
-                    res.json(error)
+                    success(res, 200, 'Register Success', {}, {})
+                }).catch((err) => {
+                    error(res, 400, 'Input Problem', err.message, {})
                 })
             }
-        }).catch((error) => {
-            console.log(error)
+        }).catch((err) => {
+            error(res, 500, 'Internal Server Error', err.message, {})
         })
-
     },
+
     detailUsers: (req, res) => {
         try {
             const id = req.params.id
@@ -90,31 +103,31 @@ module.exports = {
                     }
                     success(res, 200, 'Display Items Success', {}, result)
                 })
-                .catch((res) => {
-                    error(res, 400, 'fail')
+                .catch((err) => {
+                    error(res, 400, 'Parameter Problem', err.message, {})
                 })
-        } catch (error) {
-            error(res, 400, 'fail')
+        } catch (err) {
+            error(res, 500, 'Internal Server Error', err.message, {})
         }
     },
     updateUsers: (req, res) => {
         const id = req.params.id;
         modelsDetailUsers(id)
-        .then((response) => {
-          console.log(response)
-          const result = {
-            image: response[0].image
-          }
-          fs.unlink('./public/image/' + result.image , (err) => {
-            if (err) {
-              console.error(err)
-              return
-            }
-          })
-        })
-        .catch((res) => {
-            error(res, 400, 'cant delete users image')
-        })
+            .then((response) => {
+                console.log(response)
+                const result = {
+                    image: response[0].image
+                }
+                fs.unlink('./public/image/' + result.image, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+            })
+            .catch((err) => {
+                error(res, 400, 'Cant Delete User Image', err.message, {})
+            })
         try {
             const id = req.params.id
             const data = req.body
@@ -133,18 +146,15 @@ module.exports = {
             console.log(dataUpdate)
             modelsUpdateUsers(dataUpdate, id)
                 .then((response) => {
-                    // module.exports.setRedisItems()
                     console.log(response)
                     module.exports.setRedisUsers()
                     success(res, 200, 'Update Data Users Success', {}, dataUpdate)
                 })
                 .catch((err) => {
-                    error(res, 400, 'server cant update', err.message, {})
+                    error(res, 400, 'Server Cant Update', err.message, {})
                 });
-
-        } catch (error) {
-            console.log(error)
-            error(res, 400, 'server cant update', err.message, {})
+        } catch (err) {
+            error(res, 500, 'Internal Server Error', err.message, {})
         }
     },
     getAllUsers: async (req, res) => {
@@ -193,28 +203,28 @@ module.exports = {
                 .catch((err) => {
                     error(res, 400, 'server cant get what you want', err.message)
                 })
-        } catch (error) {
-            error(res, 400, 'server cant get what   you want', error.message)
+        } catch (err) {
+            error(res, 400, 'server cant get what   you want', err.message)
         }
     },
     deleteUsers: (req, res) => {
         const id = req.params.id;
         modelsDetailUsers(id)
-        .then((response) => {
-          console.log(response)
-          const result = {
-            image: response[0].image
-          }
-          fs.unlink('./public/image/' + result.image , (err) => {
-            if (err) {
-              console.error(err)
-              return
-            }
-          })
-        })
-        .catch((res) => {
-          error(res, 400, 'server cant get what you want')
-        })
+            .then((response) => {
+                console.log(response)
+                const result = {
+                    image: response[0].image
+                }
+                fs.unlink('./public/image/' + result.image, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+            })
+            .catch((res) => {
+                error(res, 400, 'server cant get what you want')
+            })
         try {
             const id = req.params.id
             modelsDeleteUsers(id)
@@ -231,10 +241,10 @@ module.exports = {
     },
     setRedisUsers: () => {
         modelsGetAllUsersRedis().then((response) => {
-          const data =JSON.stringify(response)
-          redis.set('users',data)
+            const data = JSON.stringify(response)
+            redis.set('users', data)
         }).catch((err) => {
-          console.log(err)
+            console.log(err)
         })
-      }
+    }
 }
