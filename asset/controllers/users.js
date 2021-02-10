@@ -54,7 +54,6 @@ module.exports = {
 
     register: async (req, res) => {
         const body = req.body
-        console.log(body)
         checkEmail(body.email).then(async (response) => {
             if (response.length >= 1) {
                 error(res, 400, 'Email Exist')
@@ -85,7 +84,6 @@ module.exports = {
             const id = req.params.id
             modelsDetailUsers(id)
                 .then((response) => {
-                    console.log(response)
                     const result = {
                         name: response[0].name,
                         username: response[0].username,
@@ -111,7 +109,6 @@ module.exports = {
         const id = req.params.id;
         modelsDetailUsers(id)
             .then((response) => {
-                console.log(response)
                 const result = {
                     image: response[0].image
                 }
@@ -128,7 +125,6 @@ module.exports = {
         try {
             const id = req.params.id
             const data = req.body
-            console.log(data)
             const dataUpdate = {
                 name: data.name,
                 username: data.username,
@@ -140,10 +136,8 @@ module.exports = {
                 lahir: data.lahir,
                 image: req.file.filename
             }
-            console.log(dataUpdate)
             modelsUpdateUsers(dataUpdate, id)
                 .then((response) => {
-                    console.log(response)
                     module.exports.setRedisUsers()
                     success(res, 200, 'Update Data Users Success', {}, dataUpdate)
                 })
@@ -165,7 +159,6 @@ module.exports = {
             const total = await modelsGetTotalUsers()
             modelsGetAllUsers(name, sort, order, limitpage, limit)
                 .then((response) => {
-                    console.log(response)
                     const data = []
                     response.forEach(element => {
                         data.push({
@@ -181,7 +174,6 @@ module.exports = {
                             address: element.address
                         })
                     })
-                    console.log(data)
                     if (data.length < 1) {
                         error(res, 400, 'data cant find')
                     } else {
