@@ -172,32 +172,36 @@ module.exports = {
     },
 
     // Delete item
-    deleteItems: (req, res) => {
+    deleteItems: async (req, res) => {
         try {
             const id = req.params.id
             // Delete File
-            modelDetailItems(id)
+            await modelDetailItems(id)
                 .then((res) => {
-                    fs.unlinkSync(`./public/image/${res[0].image}`)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-            modelDeleteItems(id)
-                .then((response) => {
-                    if (response.affectedRows != 0) {
-                        // Set data ke Redis
-                        module.exports.setRedisItems()
-                        // Kalau ada yang terhapus
-                        success(res, 200, 'Delete Item Success', {}, {})
-                    } else {
-                        // Kalau tidak ada  yang terhapus karena salah ID
-                        error(res, 400, 'Nothing deleted, Wrong ID!', {}, {})
+                    if(res.length > 0) {
+                        if(res[0].image !== 'defaultFood.png') {
+                            fs.unlinkSync(`./public/image/${res[0].image}`)
+                        }
+                        modelDeleteItems(id)
+                        .then((response) => {
+                            if (response.affectedRows != 0) {
+                                // Set data ke Redis
+                                module.exports.setRedisItems()
+                                // Kalau ada yang terhapus
+                                success(res, 200, 'Delete Item Success', {}, {})
+                            } else {
+                                // Kalau tidak ada  yang terhapus karena salah ID
+                                error(res, 400, 'Nothing deleted, Wrong ID!', {}, {})
+                            }
+                        })
+                        .catch((err) => {
+                            // Kalau Tipe ID Salah 
+                            error(res, 400, 'Wrong Parameter Type Given', err.message, {})
+                        })
                     }
                 })
                 .catch((err) => {
-                    // Kalau Tipe ID Salah 
-                    error(res, 400, 'Wrong Parameter Type Given', err.message, {})
+                    error(res, 400, 'Nothing deleted, Wrong ID!', err.message, {})
                 })
         } catch (err) {
             // Kalau ada masalah lainnya
