@@ -138,7 +138,6 @@ module.exports = {
                     hourStart: rawData.hourStart == '' ? null : `'${rawData.hourStart}'`,
                     hourEnd: rawData.hourEnd == '' ? null : `'${rawData.hourEnd}'`
                 }
-                console.log(data)
                 modelAddItems(data)
                     .then(() => {
                         // Set data ke Redis

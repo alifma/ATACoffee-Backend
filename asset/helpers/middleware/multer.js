@@ -16,7 +16,6 @@ const dataUpload = multer({
     limits: {fileSize:2},
     fileFilter: (req,file,cb) => {
         const fileext =path.extname(file.originalname)
-        console.log(fileext)
         if(fileext === '.jpg' || fileext === '.png'|| fileext === '.PNG'|| fileext === '.JPG'){
             cb(null,true)   
         }else{

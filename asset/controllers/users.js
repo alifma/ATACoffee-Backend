@@ -18,9 +18,6 @@ const {
     JWT
 } = require('../helpers/env')
 const jwt = require('jsonwebtoken')
-const {
-    response
-} = require('express')
 const redis = require('../config/redis')
 
 module.exports = {

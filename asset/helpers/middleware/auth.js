@@ -1,4 +1,3 @@
-const { response } = require('express')
 const jwt = require('jsonwebtoken')
 const {JWT} = require('../env')
 const {error} = require('../response')
@@ -14,7 +13,6 @@ module.exports ={
                 if(err){
                     error(res, 400,'token fail')
                 }else{
-                    console.log(decoded)
                     res.userAccess = decoded.access
                     next()
                 }
@@ -23,7 +21,6 @@ module.exports ={
     },
     authAdmin : (req,res,next) => {
         const access = res.userAccess
-        console.log(access)
         if(access === 1){
         next()
         }else{
