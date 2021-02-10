@@ -172,17 +172,17 @@ module.exports = {
               "total": total}
             modelPostBodyOrder(data)
                 .then(() => {
-                    // Post Head Data
-                    modelPostHeadOrder(dataHead)
-                    .then(()=> {
-                      success(res, 200, 'Add Order Success', {}, {})
-                    })
-                    // Set Data ke Redis
-                    module.exports.setRedisOrders()
-                    // Kalau berhasil menambahkan
-                    .catch((err) => {
-                      error(res, 400, 'Update Head error', err.message, {})
-                    })
+                    // // Post Head Data
+                    // modelPostHeadOrder(dataHead)
+                    // .then((respose)=> {
+                      success(res, 200, 'Add Order Head Success', {}, {})
+                    // })
+                    // // Set Data ke Redis
+                    // module.exports.setRedisOrders()
+                    // // Kalau berhasil menambahkan
+                    // .catch((err) => {
+                    //   error(res, 400, 'Update Head error', err.message, {})
+                    // })
                 })
                 .catch((err) => {
                     // Kalau ada tipe data yang salah
