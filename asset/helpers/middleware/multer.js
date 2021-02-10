@@ -13,7 +13,7 @@ const multerStorage = multer.diskStorage({
 
 const dataUpload = multer({
     storage: multerStorage,
-    limits: {fileSize:2},
+    limits: {fileSize:1 * 1024 * 1024},
     fileFilter: (req,file,cb) => {
         const fileext =path.extname(file.originalname)
         if(fileext === '.jpg' || fileext === '.png'|| fileext === '.PNG'|| fileext === '.JPG'){

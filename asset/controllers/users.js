@@ -4,6 +4,7 @@ const {
     checkEmail,
     modelsDetailUsers,
     modelsUpdateUsers,
+    modelsUpdatePatchUsers,
     modelsGetTotalUsers,
     modelsGetAllUsers,
     modelsDeleteUsers,
@@ -19,6 +20,7 @@ const {
 } = require('../helpers/env')
 const jwt = require('jsonwebtoken')
 const redis = require('../config/redis')
+const { result } = require('lodash')
 
 module.exports = {
     login: async (req, res) => {
@@ -125,6 +127,8 @@ module.exports = {
         try {
             const id = req.params.id
             const data = req.body
+            const salt = bycrypt.genSalt()
+            const passwordHash = bycrypt.hash(data.password, salt)
             const dataUpdate = {
                 name: data.name,
                 username: data.username,
@@ -134,7 +138,8 @@ module.exports = {
                 gender: data.gender,
                 address: data.address,
                 lahir: data.lahir,
-                image: req.file.filename
+                image: req.file.filename,
+                password: passwordHash
             }
             modelsUpdateUsers(dataUpdate, id)
                 .then((response) => {
@@ -145,6 +150,58 @@ module.exports = {
                     error(res, 400, 'Server Cant Update', err.message, {})
                 });
         } catch (err) {
+            error(res, 500, 'Internal Server Error', err.message, {})
+        }
+    },
+    updatePatchUsers: (req, res) => {
+        try {
+            const id = req.params.id
+            const data = req.body
+            if (req.file || data.name || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
+                data.address || data.lahir ) {
+                let dataUpdate = {}
+                if (req.file) {
+                    dataUpdate = {
+                        ...data,
+                        image: req.file.filename
+                    }
+                    modelsDetailUsers(id)
+                        .then((res) => {
+                            fs.unlinkSync(`./public/image/${res[0].image}`)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                } else {
+                    dataUpdate = {
+                        ...data
+                    }
+                }
+                modelsUpdatePatchUsers(dataUpdate, id)
+                    .then((response) => {
+                        if (response.affectedRows != 0) {
+                            module.exports.setRedisUsers()
+                            success(res, 200, 'Patch Item Success', {}, {})
+                        } else {
+                            if (req.file) {
+                                fs.unlinkSync(`./public/image/${req.file.filename}`)
+                            }
+                            error(res, 400, 'Nothing Patched, Wrong ID', {}, {})
+                        }
+                    })
+                    .catch((err) => {
+                        if (req.file) {
+                            fs.unlinkSync(`./public/image/${req.file.filename}`)
+                        }
+                        error(res, 400, 'Wrong Data Type Given', err.message, {})
+                    })
+            } else {
+                error(res, 400, 'Nothing Patched, No Data Given', 'Empty Data', {})
+            }
+        } catch (err) {
+            if (req.file) {
+                fs.unlinkSync(`./public/image/${req.file.filename}`)
+            }
             error(res, 500, 'Internal Server Error', err.message, {})
         }
     },

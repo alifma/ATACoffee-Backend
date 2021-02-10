@@ -43,6 +43,18 @@ module.exports = {
         })
     })
   },
+  modelsUpdatePatchUsers: (data, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(`UPDATE users SET ? WHERE id=?`, [data, id],
+        (error, result) => {
+          if (error) {
+            reject(new Error(error))
+          } else {
+            resolve(result)
+          }
+        })
+    })
+  },
   modelsDetailUsers: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(`SELECT name,username,firstname,lastname,handphone,gender,lahir,image,email,address FROM users WHERE id=${id}`,

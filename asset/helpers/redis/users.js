@@ -20,7 +20,6 @@ module.exports = {
                         return items.name.includes(name)
                     })
                     const sortBy = _.orderBy(filterData, [sort], [order]);
-                    console.log(sortBy)
                     const paginationData = _.slice(sortBy, limitpage, limitpage + limit)
                     const pagination = {
                         page: page,

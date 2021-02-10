@@ -1,4 +1,4 @@
-const {login ,register, detailUsers, updateUsers,getAllUsers,deleteUsers} = require ('../controllers/users')
+const {login ,register, detailUsers, updateUsers,getAllUsers,deleteUsers,updatePatchUsers} = require ('../controllers/users')
 const express = require ('express')
 const upload = require ('../helpers/middleware/multer')
 const {getAllIUsersRedis } = require ('../helpers/redis/users')
@@ -12,5 +12,6 @@ Router
 .put('/users/:id', authToken, upload, updateUsers)
 .get('/users', authToken, authAdmin,getAllIUsersRedis, getAllUsers)
 .delete('/users/:id', authToken,authAdmin, deleteUsers )
+.patch('/users/:id', upload,updatePatchUsers)
 
 module.exports =Router
