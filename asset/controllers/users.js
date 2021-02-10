@@ -204,13 +204,13 @@ module.exports = {
             error(res, 400, 'server cant get what   you want', err.message)
         }
     },
-    deleteUsers: (req, res) => {
+    deleteUsers: async (req, res) => {
         try {
             const id = req.params.id;
-            modelsDetailUsers(id)
+            await modelsDetailUsers(id)
                 .then((response) => {
                     if (response[0].image != 'default.png') {
-                        fs.unlinkSync('./public/image/' + response[0].image, (err) => {
+                        fs.unlink('./public/image/' + response[0].image, (err) => {
                             if (err) {
                                 console.error(err)
                                 return
@@ -222,9 +222,9 @@ module.exports = {
                     error(res, 400, 'server cant get what you want', err.message)
                 })
             modelsDeleteUsers(id)
-                .then((response) => {
+                .then(() => {
                     module.exports.setRedisUsers()
-                    success(res, 200, 'Delete Data Users Success')
+                    success(res, 200, 'Delete Data Users Success', {}, {})
                 })
                 .catch((err) => {
                     console.log(err)
