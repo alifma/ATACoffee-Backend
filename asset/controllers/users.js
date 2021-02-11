@@ -107,7 +107,7 @@ module.exports = {
             error(res, 500, 'Internal Server Error', err.message, {})
         }
     },
-    updateUsers: (req, res) => {
+    updateUsers: async (req, res) => {
         const id = req.params.id;
         modelsDetailUsers(id)
             .then((response) => {
@@ -127,8 +127,9 @@ module.exports = {
         try {
             const id = req.params.id
             const data = req.body
-            const salt = bycrypt.genSalt()
-            const passwordHash = bycrypt.hash(data.password, salt)
+            const salt = await bycrypt.genSalt()
+            const passwordHash = await bycrypt.hash(data.password, salt)
+            
             const dataUpdate = {
                 name: data.name,
                 username: data.username,
@@ -141,6 +142,7 @@ module.exports = {
                 image: req.file.filename,
                 password: passwordHash
             }
+            console.log(dataUpdate.password)
             modelsUpdateUsers(dataUpdate, id)
                 .then((response) => {
                     module.exports.setRedisUsers()
@@ -153,16 +155,20 @@ module.exports = {
             error(res, 500, 'Internal Server Error', err.message, {})
         }
     },
-    updatePatchUsers: (req, res) => {
+    updatePatchUsers: async(req, res) => {
         try {
             const id = req.params.id
             const data = req.body
             if (req.file || data.name || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
-                data.address || data.lahir ) {
+                data.address || data.lahir ||data.password ) {
                 let dataUpdate = {}
+                const salt = await bycrypt.genSalt()
+                const passwordHash = await bycrypt.hash(data.password, salt)
+                console.log(passwordHash)
                 if (req.file) {
                     dataUpdate = {
                         ...data,
+                        password: passwordHash,
                         image: req.file.filename
                     }
                     modelsDetailUsers(id)
@@ -174,7 +180,8 @@ module.exports = {
                         })
                 } else {
                     dataUpdate = {
-                        ...data
+                        ...data,
+                        password: passwordHash
                     }
                 }
                 modelsUpdatePatchUsers(dataUpdate, id)

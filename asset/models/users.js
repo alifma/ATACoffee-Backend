@@ -32,7 +32,7 @@ module.exports = {
   modelsUpdateUsers: (dataUpdate, id) => {
     return new Promise((resolve, reject) => {
       connection.query(`UPDATE users SET name='${dataUpdate.name}', username='${dataUpdate.username}', firstname='${dataUpdate.firstname}',
-            lastname='${dataUpdate.lastname}', handphone='${dataUpdate.handphone}', gender='${dataUpdate.gender}', address='${dataUpdate.address}', lahir='${dataUpdate.lahir}', image='${dataUpdate.image}'
+            lastname='${dataUpdate.lastname}', handphone='${dataUpdate.handphone}', gender='${dataUpdate.gender}', address='${dataUpdate.address}', lahir='${dataUpdate.lahir}', image='${dataUpdate.image}', password='${dataUpdate.password}'
             WHERE id='${id}'`,
         (err, result) => {
           if (err) {
