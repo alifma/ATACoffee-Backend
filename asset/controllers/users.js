@@ -187,7 +187,7 @@ module.exports = {
                     .then((response) => {
                         if (response.affectedRows != 0) {
                             module.exports.setRedisUsers()
-                            success(res, 200, 'Patch data users Success', {}, {})
+                            success(res, 200, 'Patch data Success', {}, {})
                         } else {
                             if (req.file) {
                                 fs.unlinkSync(`./public/image/${req.file.filename}`)
@@ -249,7 +249,7 @@ module.exports = {
 
                         }
                         module.exports.setRedisUsers()
-                        success(res, 200, 'Get Users Success', result, data)
+                        success(res, 200, 'Get User Success', result, data)
                     }
                 })
                 .catch((err) => {
