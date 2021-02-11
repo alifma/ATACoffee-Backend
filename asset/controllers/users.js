@@ -159,15 +159,16 @@ module.exports = {
         try {
             const id = req.params.id
             const data = req.body
+            // const salt = await bycrypt.genSalt()
+            // const passwordHash = await bycrypt.hash(data.password, salt)
             if (req.file || data.name || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
-                data.address || data.lahir ||data.password ) {
+                data.address || data.lahir ) {
                 let dataUpdate = {}
-                const salt = await bycrypt.genSalt()
-                const passwordHash = await bycrypt.hash(data.password, salt)
+
                 if (req.file) {
                     dataUpdate = {
                         ...data,
-                        password: passwordHash,
+                        // password: passwordHash,
                         image: req.file.filename
                     }
                     modelsDetailUsers(id)
@@ -179,8 +180,8 @@ module.exports = {
                         })
                 } else {
                     dataUpdate = {
-                        ...data,
-                        password: passwordHash
+                        ...data
+                        // password: passwordHash
                     }
                 }
                 modelsUpdatePatchUsers(dataUpdate, id)
