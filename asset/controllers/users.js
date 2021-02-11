@@ -164,7 +164,6 @@ module.exports = {
                 let dataUpdate = {}
                 const salt = await bycrypt.genSalt()
                 const passwordHash = await bycrypt.hash(data.password, salt)
-                console.log(passwordHash)
                 if (req.file) {
                     dataUpdate = {
                         ...data,
@@ -188,7 +187,7 @@ module.exports = {
                     .then((response) => {
                         if (response.affectedRows != 0) {
                             module.exports.setRedisUsers()
-                            success(res, 200, 'Patch Item Success', {}, {})
+                            success(res, 200, 'Patch users Success', {}, {})
                         } else {
                             if (req.file) {
                                 fs.unlinkSync(`./public/image/${req.file.filename}`)
