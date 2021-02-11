@@ -161,7 +161,7 @@ module.exports = {
             const data = req.body
             // const salt = await bycrypt.genSalt()
             // const passwordHash = await bycrypt.hash(data.password, salt)
-            if (req.file || data.name || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
+            if (req.file || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
                 data.address || data.lahir ) {
                 let dataUpdate = {}
 
