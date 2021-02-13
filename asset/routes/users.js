@@ -12,6 +12,6 @@ Router
 .put('/users/:id', authToken, upload, updateUsers)
 .get('/users', authToken, authAdmin,getAllIUsersRedis, getAllUsers)
 .delete('/users/:id', authToken,authAdmin, deleteUsers )
-.patch('/users/:id', upload,updatePatchUsers)
+.patch('/users/:id', authToken, upload, updatePatchUsers)
 
 module.exports =Router
