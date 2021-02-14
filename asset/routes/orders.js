@@ -24,7 +24,7 @@ route
       .get('/orders', authToken, getRedisOrders, getAllOrders)    //Admin & Customer
       .get('/orders/:inv', authToken, getDetailOrders)            //Admin & Customer
       .post('/orders', authToken, postOrders)                     //Admin & Customer
-      .delete('/orders/:inv', authToken, authAdmin, deleteOrders) //Admin
+      .delete('/orders/:inv', authToken, deleteOrders)            //Admin & Customer
       .patch('/orders/:inv', authToken, authAdmin, updateOrders)  //Admin
 
 // Exports Modules
