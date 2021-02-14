@@ -16,7 +16,7 @@ const {getRedisCtgry} = require('../helpers/redis/categories')
 
 // Atur route Categories
 route
-      .get('/categories', authToken, getRedisCtgry, getAllCtgry)      //Admin & Customer
+      .get('/categories', getRedisCtgry, getAllCtgry)      //Admin & Customer
       .get('/categories/:id', authToken, getDetailCtgry)              //Admin & Customer
       .post('/categories', authToken, authAdmin, addCtgry)            //Admin
       .delete('/categories/:id', authToken, authAdmin, deleteCtgry)   //Admin
