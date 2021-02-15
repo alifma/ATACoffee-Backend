@@ -213,7 +213,6 @@ module.exports = {
         modelUpdateBodyOrder(data, inv)
             .then((response) => {
                 if (response.affectedRows != 0) {
-
                     modelUpdateHeadOrder(dataHead , inv)
                     .then((response) => {
                         if (response.affectedRows != 0) {

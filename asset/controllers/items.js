@@ -177,10 +177,10 @@ module.exports = {
             const id = req.params.id
             // Delete File
             modelDetailItems(id)
-                .then((res) => {
+                .then(async (res) => {
                     if(res.length > 0) {
                         if(res[0].image !== 'defaultFood.png') {
-                            fs.unlinkSync(`./public/image/${res[0].image}`)
+                            await fs.unlinkSync(`./public/image/${res[0].image}`)
                         }
                     }
                 })
