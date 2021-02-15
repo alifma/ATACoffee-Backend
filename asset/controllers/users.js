@@ -23,9 +23,10 @@ const redis = require('../config/redis')
 const { result } = require('lodash')
 
 module.exports = {
-    login: async (req, res) => {
+    login:(req, res) => {
         const body = req.body
-        checkEmail(body.email).then(async (response) => {
+        checkEmail(body.email)
+        .then(async (response) => {
             if (response.length === 1) {
                 const checkPassword = await bycrypt.compare(body.password, response[0].password)
                 if (checkPassword === true) {
@@ -42,21 +43,22 @@ module.exports = {
                         access: response[0].access,
                         token: token
                     })
-                    success(res, 200, 'Login Success', {})
+                    // success(res, 200, 'Login Success', {}, {})
                 } else {
                     error(res, 400, 'Wrong Password', 'Password Failed', {})
                 }
             } else {
                 error(res, 400, 'Email Not Registered', 'Email Failed', {})
             }
-        }).catch((err) => {
+        })
+        .catch((err) => {
             error(res, 500, 'Internal Server Error', err.message, {})
         })
     },
 
     register: async (req, res) => {
         const body = req.body
-        checkEmail(body.email).then(async (response) => {
+        await checkEmail(body.email).then(async (response) => {
             if (response.length >= 1) {
                 error(res, 400, 'Email Exist')
             } else {
@@ -67,10 +69,12 @@ module.exports = {
                     password,
                     name: body.email,
                     handphone: body.handphone,
+                    image: 'defaultUser.png'
                 }
                 module.exports.setRedisUsers()
                 // res.json(user)
                 register(user).then((response) => {
+                    module.exports.setRedisUsers()
                     success(res, 200, 'Register Success', {}, {})
                 }).catch((err) => {
                     error(res, 400, 'Input Problem', err.message, {})
@@ -84,7 +88,8 @@ module.exports = {
     detailUsers: (req, res) => {
         try {
             const id = req.params.id
-            modelsDetailUsers(id)
+            if (isNaN(id) === false) {
+                modelsDetailUsers(id)
                 .then((response) => {
                     const result = {
                         name: response[0].name,
@@ -101,8 +106,11 @@ module.exports = {
                     success(res, 200, 'Display Items Success', {}, result)
                 })
                 .catch((err) => {
-                    error(res, 400, 'Parameter Problem', err.message, {})
+                    error(res, 400, 'ID Not Found', err.message, {})
                 })
+            } else {
+                error(res, 400, 'Wrong Parameter', 'Wrong ID Type', {})
+            }
         } catch (err) {
             error(res, 500, 'Internal Server Error', err.message, {})
         }
@@ -164,7 +172,6 @@ module.exports = {
             if (req.file || data.name || data.username || data.firstname || data.lastname || data.handphone || data.gender ||
                 data.address || data.lahir ) {
                 let dataUpdate = {}
-
                 if (req.file) {
                     dataUpdate = {
                         ...data,
@@ -173,7 +180,9 @@ module.exports = {
                     }
                     modelsDetailUsers(id)
                         .then((res) => {
-                            fs.unlinkSync(`./public/image/${res[0].image}`)
+                            if (res[0].image !== 'defaultUser.png') {
+                                fs.unlinkSync(`./public/image/${res[0].image}`)
+                            }
                         })
                         .catch((err) => {
                             console.log(err)
@@ -226,6 +235,7 @@ module.exports = {
                     const data = []
                     response.forEach(element => {
                         data.push({
+                            id: element.id,
                             name: element.name,
                             username: element.username,
                             firstname: element.firstname,
@@ -249,7 +259,6 @@ module.exports = {
                             totalPage: Math.ceil(total[0].total / limit)
 
                         }
-                        module.exports.setRedisUsers()
                         success(res, 200, 'Get User Success', result, data)
                     }
                 })
@@ -264,16 +273,17 @@ module.exports = {
         try {
             const id = req.params.id;
             await modelsDetailUsers(id)
-                .then((response) => {
+                .then( async (response) => {
                     if (response.length > 0) {
-                        if (response[0].image != 'default.png') {
-                            fs.unlink('./public/image/' + response[0].image, (err) => {
+                        console.log(response[0].image)
+                        if (response[0].image !== 'defaultUser.png') {
+                            await fs.unlink('./public/image/' + response[0].image, (err) => {
                                 if (err) {
                                     console.error(err)
                                     return
                                 }
                             })
-                        }
+                        } 
                         modelsDeleteUsers(id)
                             .then(() => {
                                 module.exports.setRedisUsers()

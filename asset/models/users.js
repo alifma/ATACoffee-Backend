@@ -69,7 +69,7 @@ module.exports = {
   },
   modelsGetAllUsers: (name, sort, order, limitpage, limit) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT name,username,firstname,lastname,handphone,gender,lahir,image,email,address FROM users
+      connection.query(`SELECT id,name,username,firstname,lastname,handphone,gender,lahir,image,email,address FROM users
           WHERE name LIKE '%${name}%'  ORDER BY ${sort} ${order} LIMIT ${limitpage},${limit} `,
         (err, result) => {
           if (err) {
@@ -108,7 +108,7 @@ module.exports = {
   modelsGetAllUsersRedis: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT name,username,firstname,lastname,handphone,gender,lahir,image,email,address FROM users`,
+        `SELECT id,name,username,firstname,lastname,handphone,gender,lahir,image,email,address FROM users`,
         (err, result) => {
           if (err) {
             reject(new Error(err))

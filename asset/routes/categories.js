@@ -16,11 +16,11 @@ const {getRedisCtgry} = require('../helpers/redis/categories')
 
 // Atur route Categories
 route
-      .get('/categories', getRedisCtgry, getAllCtgry)      //Admin & Customer
-      .get('/categories/:id', authToken, getDetailCtgry)              //Admin & Customer
-      .post('/categories', authToken, authAdmin, addCtgry)            //Admin
-      .delete('/categories/:id', authToken, authAdmin, deleteCtgry)   //Admin
-      .patch('/categories/:id', authToken, authAdmin, updateCtgry)    //Admin
+      .get('/api/categories', getRedisCtgry, getAllCtgry)      //Admin & Customer
+      .get('/api/categories/:id', authToken, getDetailCtgry)              //Admin & Customer
+      .post('/api/categories', authToken, authAdmin, addCtgry)            //Admin
+      .delete('/api/categories/:id', authToken, authAdmin, deleteCtgry)   //Admin
+      .patch('/api/categories/:id', authToken, authAdmin, updateCtgry)    //Admin
 
 // Exports Modules
 module.exports = route

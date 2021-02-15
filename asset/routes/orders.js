@@ -21,11 +21,11 @@ const {
 
 // Atur route Items
 route
-      .get('/orders', authToken, getRedisOrders, getAllOrders)    //Admin & Customer
-      .get('/orders/:inv', authToken, getDetailOrders)            //Admin & Customer
-      .post('/orders', authToken, postOrders)                     //Admin & Customer
-      .delete('/orders/:inv', authToken, deleteOrders)            //Admin & Customer
-      .patch('/orders/:inv', authToken, authAdmin, updateOrders)  //Admin
+      .get('/api/orders', authToken, getRedisOrders, getAllOrders)    //Admin & Customer
+      .get('/api/orders/:inv', authToken, getDetailOrders)            //Admin & Customer
+      .post('/api/orders', authToken, postOrders)                     //Admin & Customer
+      .delete('/api/orders/:inv', authToken, deleteOrders)            //Admin & Customer
+      .patch('/api/orders/:inv', authToken, authAdmin, updateOrders)  //Admin
 
 // Exports Modules
 module.exports = route
