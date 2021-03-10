@@ -4,9 +4,7 @@
   "description": "",
   "main": "coffe.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "coffe": "nodemon coffe.js",
-    "start": "nodemon coffe.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
