@@ -31,6 +31,9 @@ Backend for ATA Coffee Appliation
 - CRUD Users
 - Redis Server
 
+## Frontend
+Backend dari aplikasi ini dapat dicek pada tautan berikut [ATA-Frontend](https://github.com/alifma/ATACoffee-Frontend/)
+
 ## NPM Packages Used
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Body-Parser](https://www.npmjs.com/package/body-parser)
