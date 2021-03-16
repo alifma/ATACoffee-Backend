@@ -32,7 +32,7 @@ Backend for ATA Coffee Appliation
 - Redis Server
 
 ## Frontend
-Backend dari aplikasi ini dapat dicek pada tautan berikut [ATA-Frontend](https://github.com/alifma/ATACoffee-Frontend/)
+Frontend dari aplikasi ini dapat dicek pada tautan berikut [ATA-Frontend](https://github.com/alifma/ATACoffee-Frontend/)
 
 ## NPM Packages Used
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
